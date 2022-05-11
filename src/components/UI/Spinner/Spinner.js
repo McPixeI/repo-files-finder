@@ -1,8 +1,34 @@
-export const Spinner = () => {
+import clsx from 'clsx'
+import PropTypes from 'prop-types'
+
+export const Spinner = ({
+  size = 'lg',
+  color = 'primary',
+  align = 'center',
+  className
+}) => {
+  const alignClass = clsx(
+    { 'text-left': align === 'left' },
+    { 'text-right': align === 'right' },
+    { 'text-center': align === 'center' },
+    { inline: align === 'inline' }
+  )
+
+  const classes = clsx(
+    'inline text-white animate-spin text-gray-200 animate-spin dark:text-gray-600 transition duration-300 ease-in-out',
+    { 'fill-indigo-500': color === 'primary' },
+    { 'fill-gray-700': color === 'secondary' },
+    { 'w-4 h-4': size === 'sm' },
+    { 'w-8 h-8 ': size === 'md' },
+    { 'w-12 h-12 ': size === 'lg' },
+    className
+  )
+
   return (
-    <div>
+    <div className={alignClass}>
       <svg
         role='status'
+        className={classes}
         viewBox='0 0 100 101'
         fill='none'
         xmlns='http://www.w3.org/2000/svg'
@@ -18,4 +44,11 @@ export const Spinner = () => {
       </svg>
     </div>
   )
+}
+
+Spinner.propTypes = {
+  size: PropTypes.oneOf(['sm', 'md', 'lg']),
+  color: PropTypes.oneOf(['primary', 'secondary']),
+  align: PropTypes.oneOf(['left', 'right', 'center', 'inline']),
+  className: PropTypes.string
 }
