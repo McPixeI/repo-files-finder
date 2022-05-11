@@ -12,7 +12,7 @@ export const getURLdata = (keyword) => {
         }
       } else {
         //To Do
-        return
+        return null
       }
    
     } catch (error) {

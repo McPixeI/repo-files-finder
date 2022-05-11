@@ -1,5 +1,6 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { TextInput } from "./components/UI/Forms/TextInput/TextInput"
+import { API_BASE_PATH, TOKEN } from "./utils/constants/api"
 import { getURLdata } from "./utils/helpers"
 
 function App () {
@@ -7,6 +8,16 @@ function App () {
   const [data, setData] = useState({})
 
   console.log(data)
+
+  useEffect(()=> {
+    window.fetch(`${API_BASE_PATH}/${data.owner}/${data.repository}/git/trees/main`,{
+      method: 'GET',
+      headers: {
+        accept: 'application/vnd.github.v3+json',
+        authorization: `token ${TOKEN}`
+      }
+    })
+  },[data])
 
   const handleSubmit = (evt) => {
     evt.preventDefault()
