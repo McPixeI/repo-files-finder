@@ -1,1 +1,1 @@
-export {Searcher} from './Searcher'
+export { Searcher } from './Searcher'

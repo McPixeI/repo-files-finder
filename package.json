@@ -15,7 +15,8 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test":  "standard && react-scripts test",
+    "fix": "standard --fix",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -23,11 +24,6 @@
       "react-app",
       "react-app/jest"
     ]
-  },
-  "standard": {
-    "env": {
-      "jest": true
-    }
   },
   "browserslist": {
     "production": [
@@ -44,7 +40,12 @@
   "devDependencies": {
     "autoprefixer": "^10.4.7",
     "postcss": "^8.4.13",
-    "standard": "^17.0.0",
+    "standard": "16.0.4",
     "tailwindcss": "^3.0.24"
+  },
+  "standard": {
+    "env": {
+      "jest": true
+    }
   }
 }

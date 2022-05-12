@@ -1,12 +1,11 @@
 import { useEffect, useState } from 'react'
 import { client } from '../api-client'
-import {STATUSES} from '../constants/statuses'
-
+import { STATUSES } from '../constants/statuses'
 
 export const useFiles = (data) => {
-
-  const {owner, repository} = data
-  const ENDPOINT = `${owner}/${repository}/git/trees/main`
+  // To Do: revisar si metes una url inventada
+  const { owner, repository } = data
+  const ENDPOINT = `${data?.owner}/${data?.repository}/git/trees/main`
   const [state, setState] = useState({
     files: [],
     status: STATUSES.IDLE,
@@ -19,15 +18,15 @@ export const useFiles = (data) => {
     }
   }, [owner, repository, ENDPOINT])
 
-  //to know when stops
+  // to know when stops
   let pendingRecursiveCount = 0
-  //to avoid using setState and rerendering on every state change
-  let temp = [] 
+  // to avoid using setState and rerendering on every state change
+  const temp = []
 
   const findFilesRecursive = async (endpoint) => {
     pendingRecursiveCount = pendingRecursiveCount + 1
 
-    //only set to Loading on first entry
+    // only set to Loading on first entry
     if (pendingRecursiveCount === 1) {
       setState(prevState => ({
         ...prevState,
@@ -39,7 +38,7 @@ export const useFiles = (data) => {
       setState(prevState => ({
         ...prevState,
         status: STATUSES.ERROR,
-        error: error
+        error
       }))
     })
     const tree = data?.tree
@@ -50,17 +49,16 @@ export const useFiles = (data) => {
 
     const filteredData = tree
       .filter(entry => entry.type !== 'tree')
-    
+
     temp.push(...filteredData)
-    //on last entry we change the state avoiding a lot of rerenders
+    // on last entry we change the state avoiding a lot of rerenders
     if (pendingRecursiveCount === 0) {
       setState(prevState => ({
         ...prevState,
         files: temp,
-        status: STATUSES.SUCCES 
+        status: STATUSES.SUCCES
       }))
     }
-    
   }
 
   return state
