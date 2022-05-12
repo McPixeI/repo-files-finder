@@ -19,14 +19,22 @@ export const useFiles = (data) => {
     }
   }, [owner, repository, ENDPOINT])
 
+  //to know when stops
   let pendingRecursiveCount = 0
+  //to avoid using setState and rerendering on every state change
+  let temp = [] 
 
   const findFilesRecursive = async (endpoint) => {
     pendingRecursiveCount = pendingRecursiveCount + 1
-    setState(prevState => ({
-      ...prevState,
-      status: STATUSES.LOADING
-    }))
+
+    //only set to Loading on first entry
+    if (pendingRecursiveCount === 1) {
+      setState(prevState => ({
+        ...prevState,
+        status: STATUSES.LOADING
+      }))
+    }
+
     const data = await client(endpoint).catch(error => {
       setState(prevState => ({
         ...prevState,
@@ -42,12 +50,17 @@ export const useFiles = (data) => {
 
     const filteredData = tree
       .filter(entry => entry.type !== 'tree')
-
-    setState(prevState => ({
-      ...prevState,
-      files: [...prevState.files, ...filteredData],
-      status: pendingRecursiveCount === 0 ? STATUSES.SUCCES : STATUSES.LOADING
-    }))
+    
+    temp.push(...filteredData)
+    //on last entry we change the state avoiding a lot of rerenders
+    if (pendingRecursiveCount === 0) {
+      setState(prevState => ({
+        ...prevState,
+        files: temp,
+        status: STATUSES.SUCCES 
+      }))
+    }
+    
   }
 
   return state
