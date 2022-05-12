@@ -1,4 +1,4 @@
-export const getURLdata = (keyword) => {
+export function getURLdata (keyword) {
     if (typeof keyword !== 'string' || !keyword.length) {
       return null;
     }
@@ -18,4 +18,8 @@ export const getURLdata = (keyword) => {
     } catch (error) {
       console.log(error)
     }
+}
+
+export function getExtension (filename) {
+  return filename.split('.').pop()
 }

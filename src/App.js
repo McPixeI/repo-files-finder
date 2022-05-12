@@ -1,28 +1,16 @@
-import { useEffect, useState } from "react"
+import { useCallback, useState } from "react"
+import { ExtensionsList } from "./components/ExtensionsList/ExtensionsList"
 import { TextInput } from "./components/UI/Forms/TextInput/TextInput"
-import { API_BASE_PATH, TOKEN } from "./utils/constants/api"
 import { getURLdata } from "./utils/helpers"
 
 function App () {
   const [search, setSearch] = useState('')
   const [data, setData] = useState({})
 
-  console.log(data)
-
-  useEffect(()=> {
-    window.fetch(`${API_BASE_PATH}/${data.owner}/${data.repository}/git/trees/main`,{
-      method: 'GET',
-      headers: {
-        accept: 'application/vnd.github.v3+json',
-        authorization: `token ${TOKEN}`
-      }
-    })
-  },[data])
-
-  const handleSubmit = (evt) => {
+  const handleSubmit = useCallback((evt) => {
     evt.preventDefault()
     setData(getURLdata(search))
-  }
+  },[search])
   
   return (
     <div className='App'>
@@ -36,6 +24,7 @@ function App () {
           onChange={evt => setSearch(evt.target.value)}
         />
       </form>
+      <ExtensionsList data={data} />
     </div>
   )
 }
