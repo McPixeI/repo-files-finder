@@ -3,23 +3,31 @@ import { client } from '../api-client'
 import { STATUSES } from '../constants/statuses'
 import { filesReducer } from '../reducers/files-reducer'
 
+const initialState = {
+  files: [],
+  status: STATUSES.IDLE,
+  error: null
+}
+
 export const useFiles = (data) => {
   const { owner, repository } = data
-  const ENDPOINT = `${data?.owner}/${data?.repository}/git/trees/main`
 
-  const [state, dispatch] = useReducer(filesReducer, {
-    files: [],
-    status: STATUSES.IDLE,
-    error: null
-  })
+  const [state, dispatch] = useReducer(filesReducer, initialState)
 
   let pendingRecursiveCount = 0
   const temp = useMemo(() => [], [])
 
+  const findDefaultBranch = useCallback(async (url) => {
+    dispatch({ type: STATUSES.LOADING })
+    return await client(`${owner}/${repository}`)
+      .then(data => data.default_branch)
+      .catch(error => {
+        dispatch({ type: STATUSES.ERROR, payload: error.message })
+      })
+  }, [owner, repository])
+
   const findFilesRecursive = useCallback(async (endpoint) => {
     pendingRecursiveCount++
-
-    pendingRecursiveCount === 1 && dispatch({ type: STATUSES.LOADING })
 
     client(endpoint).then(data => {
       const { tree } = data
@@ -41,8 +49,10 @@ export const useFiles = (data) => {
 
   useEffect(() => {
     if (!Object.keys(data).length) return
-    findFilesRecursive(ENDPOINT)
-  }, [data, findFilesRecursive, ENDPOINT])
+    findDefaultBranch().then(branch => {
+      findFilesRecursive(`${data.owner}/${data.repository}/git/trees/${branch}`)
+    }).catch(err => console.log(err))
+  }, [data, findFilesRecursive, findDefaultBranch])
 
   return state
 }

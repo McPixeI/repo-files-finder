@@ -30,7 +30,7 @@ export const Searcher = () => {
       className='mb-10'
     >
       {({ values, handleChange }) => (
-        <Form className='flex mb-4'>
+        <Form className='flex mb-10'>
           <Field
             name='searcher'
             component={TextInput}
@@ -40,7 +40,7 @@ export const Searcher = () => {
           <Button
             type='submit'
             className='ml-1'
-            loading={status === STATUSES.LOADING}
+            disabled={status === STATUSES.LOADING}
           >
             Buscar
           </Button>

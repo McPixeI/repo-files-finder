@@ -15,7 +15,7 @@ export const TextInput = forwardRef(
     required = false,
     error = '',
     className,
-    form: { touched, errors },
+    form,
     ...props
   }, ref) => {
     const classes = clsx(
@@ -25,7 +25,7 @@ export const TextInput = forwardRef(
       { 'h-10 px-5': size === 'md' },
       { 'h-12 px-6': size === 'lg' },
       {
-        'border-red-500 text-red-900 focus:ring-red-500 focus:border-red-500': errors[field.name]
+        'border-red-500 text-red-900 focus:ring-red-500 focus:border-red-500': form && form.errors[field.name]
       },
       className
     )
@@ -53,10 +53,9 @@ export const TextInput = forwardRef(
           {...field}
           {...props}
         />
-        {
-          touched[field.name] && errors[field.name] &&
-            <p className='text-sm text-red-600'>{errors[field.name]}</p>
-        }
+        {form &&
+          form.touched[field.name] && form.errors[field.name] &&
+            <p className='text-sm text-red-600'>{form.errors[field.name]}</p>}
       </div>
     )
   }
