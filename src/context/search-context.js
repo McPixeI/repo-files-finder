@@ -11,8 +11,6 @@ const SearchProvider = ({ children }) => {
 
   const { files, status, error } = useFiles(data)
 
-  console.log(files)
-
   return (
     <SearchContext.Provider value={{
       searchHandler,

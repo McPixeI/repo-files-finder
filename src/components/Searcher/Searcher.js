@@ -3,12 +3,14 @@ import { TextInput } from '../UI/Forms/TextInput'
 import { Button } from '../UI/Button'
 import { useSearchContext } from '../../context/search-context'
 import { STATUSES } from '../../utils/constants/statuses'
+import { REPO_REGEX_VALIDATOR } from '../../utils/constants/regex'
+
 import { Field, Form, Formik } from 'formik'
 import * as Yup from 'yup'
 
 const validationSchema = Yup.object().shape({
   searcher: Yup.string()
-    .matches(/(?:git@|https:\/\/)github.com[:/](.*)/g, 'Introduce una URL de repositorio válida')
+    .matches(REPO_REGEX_VALIDATOR, 'Introduce una URL de repositorio válida')
 })
 
 export const Searcher = () => {
@@ -34,7 +36,13 @@ export const Searcher = () => {
             value={values.email}
             onChange={handleChange}
           />
-          <Button type='submit' loading={status === STATUSES.LOADING}>Buscar</Button>
+          <Button
+            type='submit'
+            className='ml-1'
+            loading={status === STATUSES.LOADING}
+          >
+            Buscar
+          </Button>
         </Form>
       )}
     </Formik>

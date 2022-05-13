@@ -1,12 +1,13 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useReducer, useState } from 'react'
 import { client } from '../api-client'
 import { STATUSES } from '../constants/statuses'
+import { filesReducer } from '../reducers/files-reducer'
 
 export const useFiles = (data) => {
-  // To Do: revisar si metes una url inventada
   const { owner, repository } = data
   const ENDPOINT = `${data?.owner}/${data?.repository}/git/trees/main`
-  const [state, setState] = useState({
+
+  const [state, dispatch] = useReducer(filesReducer, {
     files: [],
     status: STATUSES.IDLE,
     error: null
@@ -18,20 +19,14 @@ export const useFiles = (data) => {
     }
   }, [owner, repository, ENDPOINT])
 
-  // to know when stops
   let pendingRecursiveCount = 0
-  // to avoid using setState and rerendering on every state change
   const temp = []
 
   const findFilesRecursive = async (endpoint) => {
     pendingRecursiveCount = pendingRecursiveCount + 1
 
-    // only set to Loading on first entry
     if (pendingRecursiveCount === 1) {
-      setState(prevState => ({
-        ...prevState,
-        status: STATUSES.LOADING
-      }))
+      dispatch({ type: STATUSES.LOADING })
     }
 
     client(endpoint).then(data => {
@@ -46,20 +41,11 @@ export const useFiles = (data) => {
 
       temp.push(...filteredData)
 
-      // on last entry we change the state avoiding a lot of rerenders
       if (pendingRecursiveCount === 0) {
-        setState(prevState => ({
-          ...prevState,
-          files: temp,
-          status: STATUSES.SUCCES
-        }))
+        dispatch({ type: STATUSES.SUCCES, payload: temp })
       }
     }).catch(error => {
-      setState(prevState => ({
-        ...prevState,
-        status: STATUSES.ERROR,
-        error: error.message
-      }))
+      dispatch({ type: STATUSES.ERROR, payload: error.message })
     })
   }
 
