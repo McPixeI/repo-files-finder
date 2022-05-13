@@ -25,13 +25,13 @@ export const TextInput = forwardRef(
       { 'h-10 px-5': size === 'md' },
       { 'h-12 px-6': size === 'lg' },
       {
-        'border-red-500 text-red-900 focus:ring-red-500 focus:border-red-500': error
+        'border-red-500 text-red-900 focus:ring-red-500 focus:border-red-500': errors[field.name]
       },
       className
     )
 
     return (
-      <>
+      <div className='w-full'>
         {label && (
           <label
             htmlFor={name}
@@ -53,15 +53,15 @@ export const TextInput = forwardRef(
           {...field}
           {...props}
         />
-        {touched[field.name] && errors[field.name] && (<p class='text-sm text-red-600'>{error}</p>)}
-      </>
+        {touched[field.name] && errors[field.name] && (<p class='text-sm text-red-600'>{errors[field.name]}</p>)}
+      </div>
     )
   }
 )
 
 TextInput.propTypes = {
   name: PropTypes.string,
-  type: PropTypes.oneOf(['text', 'password', 'email', 'search']), // For now only this types are OK
+  type: PropTypes.oneOf(['text', 'password', 'email', 'search']),
   placeholder: PropTypes.string,
   size: PropTypes.oneOf(['sm', 'md', 'lg']),
   value: PropTypes.string,

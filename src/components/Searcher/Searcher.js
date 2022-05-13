@@ -27,21 +27,14 @@ export const Searcher = () => {
       className='mb-10'
     >
       {({ values, handleChange, errors, touched }) => (
-        <Form className='flex'>
+        <Form className='flex mb-4'>
           <Field
             name='searcher'
             component={TextInput}
             value={values.email}
             onChange={handleChange}
-            className='mr-1'
           />
           <Button type='submit' disabled={status === STATUSES.LOADING}>Search</Button>
-          {console.log(errors)}
-          {errors.searcher && touched.searcher
-            ? (
-              <div>{errors.searcher}</div>
-              )
-            : null}
         </Form>
       )}
     </Formik>
