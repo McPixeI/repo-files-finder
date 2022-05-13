@@ -34,31 +34,33 @@ export const useFiles = (data) => {
       }))
     }
 
-    const data = await client(endpoint).catch(error => {
+    client(endpoint).then(data => {
+      const { tree } = data
+      tree.forEach(entry => entry.type === 'tree' &&
+      findFilesRecursive(`${owner}/${repository}/git/trees/${entry.sha}`))
+
+      pendingRecursiveCount = pendingRecursiveCount - 1
+
+      const filteredData = tree
+        .filter(entry => entry.type !== 'tree')
+
+      temp.push(...filteredData)
+
+      // on last entry we change the state avoiding a lot of rerenders
+      if (pendingRecursiveCount === 0) {
+        setState(prevState => ({
+          ...prevState,
+          files: temp,
+          status: STATUSES.SUCCES
+        }))
+      }
+    }).catch(error => {
       setState(prevState => ({
         ...prevState,
         status: STATUSES.ERROR,
-        error
+        error: error.message
       }))
     })
-    const tree = data?.tree
-    tree.forEach(entry => entry.type === 'tree' &&
-    findFilesRecursive(`${owner}/${repository}/git/trees/${entry.sha}`))
-
-    pendingRecursiveCount = pendingRecursiveCount - 1
-
-    const filteredData = tree
-      .filter(entry => entry.type !== 'tree')
-
-    temp.push(...filteredData)
-    // on last entry we change the state avoiding a lot of rerenders
-    if (pendingRecursiveCount === 0) {
-      setState(prevState => ({
-        ...prevState,
-        files: temp,
-        status: STATUSES.SUCCES
-      }))
-    }
   }
 
   return state

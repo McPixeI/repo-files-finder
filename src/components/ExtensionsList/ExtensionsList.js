@@ -14,11 +14,11 @@ export const ExtensionsList = () => {
 
   if (status === 'loading') return <Spinner />
 
+  // ToDo: mostrar toast o algo asi?
   if (status === 'error') return <p>Error: {error}</p>
 
   return (
     <>
-
       {Object.keys(extensions).length
         ? (Object.keys(extensions).map(ext => {
             return <p key={ext}><strong>{`${ext}: `}</strong>{extensions[ext]}</p>
