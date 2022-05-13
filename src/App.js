@@ -6,12 +6,15 @@ function App () {
   const [data, setData] = useState({})
 
   return (
-    <div className='container mx-auto px-4 py-4'>
-      <h1 className='text-3xl font-bold mb-4'>
-        Repo extensions finder
-      </h1>
-      <Searcher setData={setData} />
-      <ExtensionsList data={data} />
+    <div className='flex justify-center mt-20 px-4'>
+      <div className='w-full max-w-3xl'>
+        <h1 className='text-3xl font-bold mb-10 text-center'>
+          Repo extensions finder
+        </h1>
+        <Searcher setData={setData} />
+        <ExtensionsList data={data} />
+      </div>
+
     </div>
   )
 }

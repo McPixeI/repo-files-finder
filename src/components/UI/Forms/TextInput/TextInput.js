@@ -18,7 +18,7 @@ export const TextInput = forwardRef(
     ...rest
   }, ref) => {
     const classes = clsx(
-      'outline-none p-4 w-full text-gray-900 bg-gray-50 rounded-lg border border-gray-300 sm:text-md disabled:cursor-not-allowed focus:ring-indigo-500 focus:border-indigo-500',
+      'outline-none p-4 w-full text-gray-900 bg-gray-50 border border-gray-300 sm:text-md disabled:cursor-not-allowed focus:ring-indigo-500 focus:border-indigo-500',
       'transition duration-300 ease-in-out',
       { 'h-8 px-4': size === 'sm' },
       { 'h-10 px-5': size === 'md' },
