@@ -1,4 +1,3 @@
-import { useId } from 'react'
 import { useSearchContext } from '../../context/search-context'
 import { getExtension } from '../../utils/helpers'
 import { Spinner } from '../UI/Spinner'
@@ -22,7 +21,7 @@ export const ExtensionsList = () => {
 
       {Object.keys(extensions).length
         ? (Object.keys(extensions).map(ext => {
-            return <p key={useId}><strong>{`${ext}: `}</strong>{extensions[ext]}</p>
+            return <p key={ext}><strong>{`${ext}: `}</strong>{extensions[ext]}</p>
           }))
         : null}
     </>
