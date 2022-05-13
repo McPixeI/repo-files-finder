@@ -18,7 +18,7 @@ export const Button = forwardRef(
     ref
   ) => {
     const classes = clsx(
-      'inline-block text-lg rounded-sm focus:outline-none focus:ring focus:ring-opacity-50 disabled:opacity-50',
+      'inline-flex justify-center items-center text-lg rounded-sm focus:outline-none focus:ring focus:ring-opacity-50 disabled:opacity-50',
       'transition duration-300 ease-in-out',
       { 'h-8 px-4': size === 'sm' },
       { 'h-10 px-5': size === 'md' },
@@ -42,7 +42,7 @@ export const Button = forwardRef(
         disabled={disabled || loading}
         {...rest}
       >
-        {loading && <Spinner size='sm' align='inline' className='mr-3' />}
+        {loading && <Spinner size='sm' align='inline' className='mr-2 -mt-1' />}
         {children}
       </button>
     )

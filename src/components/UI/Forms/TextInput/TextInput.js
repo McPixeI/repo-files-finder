@@ -53,7 +53,10 @@ export const TextInput = forwardRef(
           {...field}
           {...props}
         />
-        {touched[field.name] && errors[field.name] && (<p class='text-sm text-red-600'>{errors[field.name]}</p>)}
+        {
+          touched[field.name] && errors[field.name] &&
+            <p className='text-sm text-red-600'>{errors[field.name]}</p>
+        }
       </div>
     )
   }

@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { getURLdata } from '../../utils/helpers'
 import { TextInput } from '../UI/Forms/TextInput'
 import { Button } from '../UI/Button'
@@ -8,7 +7,8 @@ import { Field, Form, Formik } from 'formik'
 import * as Yup from 'yup'
 
 const validationSchema = Yup.object().shape({
-  searcher: Yup.string().min(2)
+  searcher: Yup.string()
+    .matches(/(?:git@|https:\/\/)github.com[:/](.*)/g, 'Introduce una URL de repositorio válida')
 })
 
 export const Searcher = () => {
@@ -26,7 +26,7 @@ export const Searcher = () => {
       onSubmit={handleSubmit}
       className='mb-10'
     >
-      {({ values, handleChange, errors, touched }) => (
+      {({ values, handleChange }) => (
         <Form className='flex mb-4'>
           <Field
             name='searcher'
@@ -34,7 +34,7 @@ export const Searcher = () => {
             value={values.email}
             onChange={handleChange}
           />
-          <Button type='submit' disabled={status === STATUSES.LOADING}>Search</Button>
+          <Button type='submit' loading={status === STATUSES.LOADING}>Buscar</Button>
         </Form>
       )}
     </Formik>
