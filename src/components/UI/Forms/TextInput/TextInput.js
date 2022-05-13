@@ -18,13 +18,13 @@ export const TextInput = forwardRef(
     ...rest
   }, ref) => {
     const classes = clsx(
-      'outline-none p-4 w-full text-gray-900 bg-gray-50 rounded-lg border border-gray-300 sm:text-md disabled:cursor-not-allowed focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-indigo-500 dark:focus:border-indigo-500',
+      'outline-none p-4 w-full text-gray-900 bg-gray-50 rounded-lg border border-gray-300 sm:text-md disabled:cursor-not-allowed focus:ring-indigo-500 focus:border-indigo-500',
       'transition duration-300 ease-in-out',
       { 'h-8 px-4': size === 'sm' },
       { 'h-10 px-5': size === 'md' },
       { 'h-12 px-6': size === 'lg' },
       {
-        'border-red-500 text-red-900 dark:border-red-500 dark:text-red-900 focus:ring-red-500 focus:border-red-500 dark:focus:ring-red-500 dark:focus:border-red-500': error
+        'border-red-500 text-red-900 focus:ring-red-500 focus:border-red-500': error
       },
       className
     )
@@ -34,7 +34,7 @@ export const TextInput = forwardRef(
         {label && (
           <label
             htmlFor={name}
-            className='block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300'
+            className='block mb-2 text-sm font-medium text-gray-900'
           >
             {label}
           </label>
@@ -52,7 +52,7 @@ export const TextInput = forwardRef(
           ref={ref}
           {...rest}
         />
-        {error && <p class='text-sm text-red-600 dark:text-red-500'>{error}</p>}
+        {error && <p class='text-sm text-red-600'>{error}</p>}
       </>
     )
   }

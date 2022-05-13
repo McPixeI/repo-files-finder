@@ -28,7 +28,7 @@ export const Button = forwardRef(
           variant === 'primary'
       },
       {
-        'text-white bg-gray-700 hover:bg-gray-600 ring-gray-200 dark:bg-white dark:text-gray-600':
+        'text-white bg-gray-700 hover:bg-gray-600 ring-gray-200':
           variant === 'secondary'
       },
       className

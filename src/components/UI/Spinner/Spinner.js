@@ -15,7 +15,7 @@ export const Spinner = ({
   )
 
   const classes = clsx(
-    'inline text-white animate-spin text-gray-200 animate-spin dark:text-gray-600 transition duration-300 ease-in-out',
+    'inline text-white animate-spin text-gray-200 animate-spin transition duration-300 ease-in-out',
     { 'fill-indigo-500': color === 'primary' },
     { 'fill-gray-700': color === 'secondary' },
     { 'w-4 h-4': size === 'sm' },
