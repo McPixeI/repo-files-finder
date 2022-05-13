@@ -1,10 +1,7 @@
 import { createContext, useContext, useState } from 'react'
 import { useFiles } from '../utils/hooks/use-files'
 
-export const SearchContext = createContext({
-  query: '',
-  searchHandler: () => {}
-})
+export const SearchContext = createContext()
 SearchContext.displayName = 'SearchContext'
 
 const SearchProvider = ({ children }) => {

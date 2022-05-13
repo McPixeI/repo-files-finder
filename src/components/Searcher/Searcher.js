@@ -2,13 +2,13 @@ import { useCallback, useContext, useState } from 'react'
 import { getURLdata } from '../../utils/helpers'
 import { TextInput } from '../UI/Forms/TextInput'
 import { Button } from '../UI/Button'
-import { SearchContext } from '../../context/search-context'
+import { useSearchContext } from '../../context/search-context'
 import { STATUSES } from '../../utils/constants/statuses'
 
 export const Searcher = () => {
   const [search, setSearch] = useState('')
 
-  const { searchHandler, status } = useContext(SearchContext)
+  const { searchHandler, status } = useSearchContext()
 
   const handleSubmit = useCallback((evt) => {
     evt.preventDefault()
