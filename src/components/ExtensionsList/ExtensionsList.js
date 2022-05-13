@@ -1,10 +1,10 @@
-import { useId } from 'react'
+import { useContext, useId } from 'react'
+import { SearchContext } from '../../context/search-context'
 import { getExtension } from '../../utils/helpers'
-import { useFiles } from '../../utils/hooks/use-files'
 import { Spinner } from '../UI/Spinner'
 
-export const ExtensionsList = ({ data }) => {
-  const { files, status, error } = useFiles(data)
+export const ExtensionsList = () => {
+  const { files, status, error } = useContext(SearchContext)
 
   const paths = files.map(file => getExtension(file.path))
 

@@ -1,15 +1,19 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useContext, useState } from 'react'
 import { getURLdata } from '../../utils/helpers'
 import { TextInput } from '../UI/Forms/TextInput'
 import { Button } from '../UI/Button'
+import { SearchContext } from '../../context/search-context'
+import { STATUSES } from '../../utils/constants/statuses'
 
-export const Searcher = ({ setData }) => {
+export const Searcher = () => {
   const [search, setSearch] = useState('')
+
+  const { searchHandler, status } = useContext(SearchContext)
 
   const handleSubmit = useCallback((evt) => {
     evt.preventDefault()
-    setData(getURLdata(search))
-  }, [search, setData])
+    searchHandler(getURLdata(search))
+  }, [search, searchHandler])
 
   return (
     <form onSubmit={handleSubmit} className='mb-10'>
@@ -20,7 +24,7 @@ export const Searcher = ({ setData }) => {
           value={search}
           onChange={evt => setSearch(evt.target.value)}
         />
-        <Button type='submit'>Search</Button>
+        <Button type='submit' disabled={status === STATUSES.LOADING}>Search</Button>
       </div>
 
     </form>
