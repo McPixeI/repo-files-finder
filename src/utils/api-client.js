@@ -18,6 +18,7 @@ async function client (
 
   return window.fetch(`${API_BASE_PATH}/${endpoint}`, config).then(async response => {
     if (response.status === 401) {
+      /* eslint-disable prefer-promise-reject-errors */
       return Promise.reject({ message: 'Authentication error' })
     }
     const data = await response.json()
