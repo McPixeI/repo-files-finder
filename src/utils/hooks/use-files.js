@@ -1,4 +1,4 @@
-import { useEffect, useReducer, useState } from 'react'
+import { useCallback, useEffect, useMemo, useReducer } from 'react'
 import { client } from '../api-client'
 import { STATUSES } from '../constants/statuses'
 import { filesReducer } from '../reducers/files-reducer'
@@ -13,41 +13,36 @@ export const useFiles = (data) => {
     error: null
   })
 
-  useEffect(() => {
-    if (owner && repository) {
-      findFilesRecursive(ENDPOINT)
-    }
-  }, [owner, repository, ENDPOINT])
-
   let pendingRecursiveCount = 0
-  const temp = []
+  const temp = useMemo(() => [], [])
 
-  const findFilesRecursive = async (endpoint) => {
-    pendingRecursiveCount = pendingRecursiveCount + 1
+  const findFilesRecursive = useCallback(async (endpoint) => {
+    pendingRecursiveCount++
 
-    if (pendingRecursiveCount === 1) {
-      dispatch({ type: STATUSES.LOADING })
-    }
+    pendingRecursiveCount === 1 && dispatch({ type: STATUSES.LOADING })
 
     client(endpoint).then(data => {
       const { tree } = data
       tree.forEach(entry => entry.type === 'tree' &&
       findFilesRecursive(`${owner}/${repository}/git/trees/${entry.sha}`))
 
-      pendingRecursiveCount = pendingRecursiveCount - 1
+      --pendingRecursiveCount
 
       const filteredData = tree
         .filter(entry => entry.type !== 'tree')
 
       temp.push(...filteredData)
 
-      if (pendingRecursiveCount === 0) {
-        dispatch({ type: STATUSES.SUCCES, payload: temp })
-      }
+      pendingRecursiveCount === 0 && dispatch({ type: STATUSES.SUCCES, payload: temp })
     }).catch(error => {
       dispatch({ type: STATUSES.ERROR, payload: error.message })
     })
-  }
+  }, [owner, repository, pendingRecursiveCount, temp])
+
+  useEffect(() => {
+    if (!Object.keys(data).length) return
+    findFilesRecursive(ENDPOINT)
+  }, [data, findFilesRecursive, ENDPOINT])
 
   return state
 }

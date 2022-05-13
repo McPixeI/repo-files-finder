@@ -1,4 +1,4 @@
-import { getURLdata } from '../../utils/helpers'
+import { extractRepoDataFromURL } from '../../utils/helpers'
 import { TextInput } from '../UI/Forms/TextInput'
 import { Button } from '../UI/Button'
 import { useSearchContext } from '../../context/search-context'
@@ -18,7 +18,8 @@ export const Searcher = () => {
 
   const handleSubmit = (values) => {
     const { searcher } = values
-    searchHandler(getURLdata(searcher))
+    const repoData = extractRepoDataFromURL(searcher)
+    searchHandler(repoData)
   }
 
   return (
