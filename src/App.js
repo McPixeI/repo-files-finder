@@ -10,6 +10,8 @@ function App () {
         </h1>
         <Searcher />
         <ExtensionsList />
+        <p className='text-sm text-center my-4'>Made by <a className='text-indigo-500' href='https://github.com/McPixeI/repo-files-finder'>McPixeI</a></p>
+
       </div>
     </div>
   )
