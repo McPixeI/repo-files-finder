@@ -4,18 +4,19 @@ import { forwardRef } from 'react'
 
 export const TextInput = forwardRef(
   ({
+    field,
+    label,
     name,
+    value,
     type = 'text',
     placeholder,
     size = 'md',
-    label,
-    value = '',
     disabled = false,
-    error = '',
     required = false,
+    error = '',
     className,
-    onChange = () => {},
-    ...rest
+    form: { touched, errors },
+    ...props
   }, ref) => {
     const classes = clsx(
       'outline-none p-4 w-full text-gray-900 bg-gray-50 border border-gray-300 sm:text-md disabled:cursor-not-allowed focus:ring-indigo-500 focus:border-indigo-500',
@@ -48,18 +49,18 @@ export const TextInput = forwardRef(
           name={name}
           value={value}
           disabled={disabled}
-          onChange={onChange}
           ref={ref}
-          {...rest}
+          {...field}
+          {...props}
         />
-        {error && <p class='text-sm text-red-600'>{error}</p>}
+        {touched[field.name] && errors[field.name] && (<p class='text-sm text-red-600'>{error}</p>)}
       </>
     )
   }
 )
 
 TextInput.propTypes = {
-  name: PropTypes.string.isRequired,
+  name: PropTypes.string,
   type: PropTypes.oneOf(['text', 'password', 'email', 'search']), // For now only this types are OK
   placeholder: PropTypes.string,
   size: PropTypes.oneOf(['sm', 'md', 'lg']),
@@ -67,6 +68,5 @@ TextInput.propTypes = {
   disabled: PropTypes.bool,
   error: PropTypes.string,
   required: PropTypes.bool,
-  className: PropTypes.string,
-  onChange: PropTypes.func.isRequired
+  className: PropTypes.string
 }

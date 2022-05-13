@@ -1,32 +1,49 @@
-import { useCallback, useContext, useState } from 'react'
+import { useState } from 'react'
 import { getURLdata } from '../../utils/helpers'
 import { TextInput } from '../UI/Forms/TextInput'
 import { Button } from '../UI/Button'
 import { useSearchContext } from '../../context/search-context'
 import { STATUSES } from '../../utils/constants/statuses'
+import { Field, Form, Formik } from 'formik'
+import * as Yup from 'yup'
+
+const validationSchema = Yup.object().shape({
+  searcher: Yup.string().min(2)
+})
 
 export const Searcher = () => {
-  const [search, setSearch] = useState('')
-
   const { searchHandler, status } = useSearchContext()
 
-  const handleSubmit = useCallback((evt) => {
-    evt.preventDefault()
-    searchHandler(getURLdata(search))
-  }, [search, searchHandler])
+  const handleSubmit = (values) => {
+    const { searcher } = values
+    searchHandler(getURLdata(searcher))
+  }
 
   return (
-    <form onSubmit={handleSubmit} className='mb-10'>
-      <div className='flex'>
-        <TextInput
-          className='mr-1'
-          name='searcher'
-          value={search}
-          onChange={evt => setSearch(evt.target.value)}
-        />
-        <Button type='submit' disabled={status === STATUSES.LOADING}>Search</Button>
-      </div>
-
-    </form>
+    <Formik
+      initialValues={{ searcher: '' }}
+      validationSchema={validationSchema}
+      onSubmit={handleSubmit}
+      className='mb-10'
+    >
+      {({ values, handleChange, errors, touched }) => (
+        <Form className='flex'>
+          <Field
+            name='searcher'
+            component={TextInput}
+            value={values.email}
+            onChange={handleChange}
+            className='mr-1'
+          />
+          <Button type='submit' disabled={status === STATUSES.LOADING}>Search</Button>
+          {console.log(errors)}
+          {errors.searcher && touched.searcher
+            ? (
+              <div>{errors.searcher}</div>
+              )
+            : null}
+        </Form>
+      )}
+    </Formik>
   )
 }
